@@ -1,0 +1,23 @@
+package models
+
+import "time"
+
+type Event struct {
+	ID          int
+	Name        string    `binding:"required"`
+	Description string    `binding:"required"`
+	Location    string    `binding:"required"`
+	Date        time.Time `binding:"required"`
+	UserID      int
+}
+
+var events = []Event{}
+
+func (e Event) Save() {
+	// TODO: Implementation for saving the event to db
+	events = append(events, e)
+}
+
+func GetAllEvents() []Event {
+	return events
+}
