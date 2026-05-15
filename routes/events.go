@@ -71,7 +71,7 @@ func updateEvent(context *gin.Context) {
 	event, err := models.GetEventByID(id)
 
 	if err != nil {
-		context.JSON(http.StatusNotFound, gin.H{"message": "Could not retrieve event."})
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not retrieve event."})
 		return
 	}
 
@@ -111,7 +111,7 @@ func deleteEvent(context *gin.Context) {
 	event, err := models.GetEventByID(id)
 
 	if err != nil {
-		context.JSON(http.StatusNotFound, gin.H{"message": "Could not retrieve event."})
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not retrieve event."})
 		return
 	}
 
