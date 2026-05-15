@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+
 	"github.com/shaneoh10/events-backend/db"
 	"github.com/shaneoh10/events-backend/utils"
 )
@@ -38,4 +40,27 @@ func (u User) Save() error {
 	u.ID = int64(id)
 
 	return err
+}
+
+func (u User) ValidateCredentials() error {
+	query := `
+	SELECT password 
+	FROM users 
+	WHERE email = ?`
+
+	var hashedPassword string
+
+	row := db.DB.QueryRow(query, u.Email)
+	err := row.Scan(&hashedPassword)
+
+	if err != nil {
+		return errors.New("Invalid credentials.")
+	}
+
+	isValid := utils.CheckPasswordHash(u.Password, hashedPassword)
+	if !isValid {
+		return errors.New("Invalid credentials.")
+	}
+
+	return nil
 }
